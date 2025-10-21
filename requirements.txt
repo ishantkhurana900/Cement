@@ -1,0 +1,18 @@
+# requirements.txt - Python dependencies for data uploader
+
+# Firebase Admin SDK
+firebase-admin==6.2.0
+
+# Data processing
+pandas==2.1.1
+openpyxl==3.1.2
+
+# Environment management
+python-dotenv==1.0.0
+
+# Additional utilities
+schedule==1.2.0
+requests==2.31.0
+
+# Optional: For enhanced Excel support
+xlrd==2.0.1
