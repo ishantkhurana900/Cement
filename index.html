@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cement Plant Operations Dashboard</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- Chart.js for real-time visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>🏭 Cement Plant Operations Dashboard</h1>
+                <div class="status-panel">
+                    <div class="connection-status" id="connectionStatus">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span id="statusText">Connecting...</span>
+                    </div>
+                    <div class="last-update" id="lastUpdate">
+                        Last Update: --
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Key Metrics Grid -->
+        <section class="metrics-grid">
+            <div class="metric-card temperature">
+                <div class="metric-header">
+                    <h3>🌡️ Clinker Inlet Temp</h3>
+                    <div class="metric-trend" id="clinkerInletTrend">--</div>
+                </div>
+                <div class="metric-value" id="clinkerInletTemp">--</div>
+                <div class="metric-unit">°C</div>
+            </div>
+
+            <div class="metric-card temperature">
+                <div class="metric-header">
+                    <h3>🌡️ Clinker Outlet Temp</h3>
+                    <div class="metric-trend" id="clinkerOutletTrend">--</div>
+                </div>
+                <div class="metric-value" id="clinkerOutletTemp">--</div>
+                <div class="metric-unit">°C</div>
+            </div>
+
+            <div class="metric-card flow">
+                <div class="metric-header">
+                    <h3>💨 Cooling Air Flow</h3>
+                    <div class="metric-trend" id="coolingAirFlowTrend">--</div>
+                </div>
+                <div class="metric-value" id="coolingAirFlow">--</div>
+                <div class="metric-unit">m³/min</div>
+            </div>
+
+            <div class="metric-card temperature">
+                <div class="metric-header">
+                    <h3>🔥 Secondary Air Temp</h3>
+                    <div class="metric-trend" id="secondaryAirTempTrend">--</div>
+                </div>
+                <div class="metric-value" id="secondaryAirTemp">--</div>
+                <div class="metric-unit">°C</div>
+            </div>
+
+            <div class="metric-card production">
+                <div class="metric-header">
+                    <h3>⚙️ Grate Speed</h3>
+                    <div class="metric-trend" id="grateSpeedTrend">--</div>
+                </div>
+                <div class="metric-value" id="grateSpeed">--</div>
+                <div class="metric-unit">rpm</div>
+            </div>
+
+            <div class="metric-card production">
+                <div class="metric-header">
+                    <h3>🏭 Clinker Production</h3>
+                    <div class="metric-trend" id="clinkerProductionTrend">--</div>
+                </div>
+                <div class="metric-value" id="clinkerProduction">--</div>
+                <div class="metric-unit">t/h</div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-container">
+            <div class="chart-wrapper">
+                <div class="chart-header">
+                    <h3>🌡️ Temperature Trends (Last 5 Minutes)</h3>
+                    <div class="chart-controls">
+                        <button class="chart-btn active" data-timespan="5">5min</button>
+                        <button class="chart-btn" data-timespan="15">15min</button>
+                        <button class="chart-btn" data-timespan="60">1hr</button>
+                    </div>
+                </div>
+                <canvas id="temperatureChart"></canvas>
+            </div>
+
+            <div class="chart-wrapper">
+                <div class="chart-header">
+                    <h3>💨 Flow & Production Trends (Last 5 Minutes)</h3>
+                </div>
+                <canvas id="flowProductionChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Additional Metrics -->
+        <section class="detailed-metrics">
+            <div class="metrics-row">
+                <div class="metric-card small">
+                    <h4>🥄 Cement Mill Feed Rate</h4>
+                    <div class="metric-value small" id="cementMillFeedRate">--</div>
+                    <div class="metric-unit">t/h</div>
+                </div>
+
+                <div class="metric-card small">
+                    <h4>⚪ Gypsum Addition</h4>
+                    <div class="metric-value small" id="gypsumAddition">--</div>
+                    <div class="metric-unit">%</div>
+                </div>
+
+                <div class="metric-card small">
+                    <h4>⚡ Cement Mill Power</h4>
+                    <div class="metric-value small" id="cementMillPower">--</div>
+                    <div class="metric-unit">kW</div>
+                </div>
+
+                <div class="metric-card small">
+                    <h4>🔍 Cement Fineness (Blaine)</h4>
+                    <div class="metric-value small" id="cementFinenessBlaine">--</div>
+                    <div class="metric-unit">cm²/g</div>
+                </div>
+
+                <div class="metric-card small">
+                    <h4>📏 Cement Fineness (45μm)</h4>
+                    <div class="metric-value small" id="cementFineness45um">--</div>
+                    <div class="metric-unit">%</div>
+                </div>
+
+                <div class="metric-card small">
+                    <h4>🎯 Separator Efficiency</h4>
+                    <div class="metric-value small" id="separatorEfficiency">--</div>
+                    <div class="metric-unit">%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="footer-content">
+                <p>Cement Plant Operations Dashboard | Real-time monitoring every 5 seconds</p>
+                <p>Powered by Firebase | <span id="dataPoints">0</span> data points collected</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Loading dashboard...</p>
+    </div>
+
+    <!-- Alert Modal -->
+    <div class="alert-modal" id="alertModal">
+        <div class="alert-content">
+            <h3>⚠️ System Alert</h3>
+            <p id="alertMessage"></p>
+            <button onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

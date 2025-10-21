@@ -1,10 +1,49 @@
+# firebase.json
+```json
 {
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }
+```
+
+# .firebaserc
+```json
+{
+  "projects": {
+    "default": "your-cement-plant-project-id"
+  }
+}
+```
+
+# database.rules.json
+```json
+{
+  "rules": {
+    "cement_plant_data": {
+      ".read": true,
+      ".write": false,
+      "current": {
+        ".write": "auth != null"
+      }
+    }
+  }
+}
+```
