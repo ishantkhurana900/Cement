@@ -1,0 +1,5 @@
+Service,Usage,Free Limit,Status
+Realtime Database,0.247 GB,10 GB,✅ Free
+Hosting,<0.1 GB,10 GB,✅ Free
+Cloud Functions,<1K invocations,2M invocations,✅ Free
+Authentication,Not needed,50K MAU,✅ Free
