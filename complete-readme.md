@@ -400,3 +400,6 @@ Your cement plant dashboard is now running completely free on Firebase! The solu
 **Real-time Updates**: Every 5 seconds  
 
 Perfect for cement plant operations monitoring! 🏭📊
+
+
+https://level-delta-7289e342e7-centralindia.webapp.fabricapps.net/register
